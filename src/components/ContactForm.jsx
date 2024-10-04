@@ -29,7 +29,7 @@ const ContactForm = () => {
     const formattedNumber = formatNumber(values.number);
     const contactExists = contacts.some(
       (contact) =>
-        contact.name === values.name || contact.number === values.number
+        contact.name === values.name || contact.number === formattedNumber
     );
 
     if (contactExists) {
@@ -59,7 +59,12 @@ const ContactForm = () => {
                 className={styles.error}
               />
               <label htmlFor={numberFieldId}>Number</label>
-              <Field type="text" name="number" id={numberFieldId}></Field>
+              <Field
+                type="text"
+                name="number"
+                id={numberFieldId}
+                maxLength={7}
+              ></Field>
               <ErrorMessage
                 name="number"
                 component="div"
