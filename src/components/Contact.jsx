@@ -10,8 +10,8 @@ const Contact = ({ id, name, number }) => {
     <>
       <div className={styles.form}>
         <div className={styles.personData} key={id} id={id}>
-          <h4>{name ? name.toString() : "Unknown Name"}</h4>
-          <p>☎ {number ? number.toString() : "Unknown Number"}</p>
+          <h4>{name}</h4>
+          <p>☎ {number}</p>
         </div>
         <button onClick={handleDelete}>Delete</button>
       </div>

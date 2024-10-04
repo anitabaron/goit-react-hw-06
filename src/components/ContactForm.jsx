@@ -3,7 +3,7 @@ import { useId } from "react";
 import styles from "./ContactForm.module.css";
 import * as Yup from "yup";
 import { addContact } from "../redux/contactsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const userSchema = Yup.object().shape({
   name: Yup.string()
@@ -11,21 +11,36 @@ const userSchema = Yup.object().shape({
     .max(50, "Name is too long")
     .required("Required"),
   number: Yup.string()
-    .min(3, "Number is too short")
-    .max(50, "Number is too long")
+    .matches(/^\d{7}$/, "Number must be exactly 7 digits")
     .required("Required"),
 });
+
+const formatNumber = (number) => {
+  return `${number.slice(0, 3)}-${number.slice(3, 5)}-${number.slice(5)}`;
+};
 
 const ContactForm = () => {
   const dispatch = useDispatch();
   const nameFieldId = useId();
   const numberFieldId = useId();
+  const contacts = useSelector((state) => state.contacts.items);
 
   const handleSubmit = (values, actions) => {
-    dispatch(addContact(values.name, values.number));
-    console.log("name: ", values.name, "number :", values.number);
+    const formattedNumber = formatNumber(values.number);
+    const contactExists = contacts.some(
+      (contact) =>
+        contact.name === values.name || contact.number === values.number
+    );
+
+    if (contactExists) {
+      alert("This contact already exists.");
+      return;
+    }
+
+    dispatch(addContact(values.name, formattedNumber));
     actions.resetForm();
   };
+
   return (
     <Formik
       initialValues={{ name: "", number: "" }}
@@ -44,7 +59,7 @@ const ContactForm = () => {
                 className={styles.error}
               />
               <label htmlFor={numberFieldId}>Number</label>
-              <Field type="number" name="number" id={numberFieldId}></Field>
+              <Field type="text" name="number" id={numberFieldId}></Field>
               <ErrorMessage
                 name="number"
                 component="div"

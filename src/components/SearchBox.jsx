@@ -9,6 +9,7 @@ const SearchBox = () => {
 
   const handleFilterChange = (e) => {
     dispatch(setFilter(e.target.value));
+    console.log("filter: ", e.target.value);
   };
   return (
     <>
@@ -23,7 +24,6 @@ const SearchBox = () => {
           value={filter}
           // id={searchFieldId}
         />
-        <button onClick={() => handleFilterChange}>Search</button>
       </div>
     </>
   );
