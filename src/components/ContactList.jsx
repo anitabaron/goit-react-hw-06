@@ -26,7 +26,7 @@ const ContactList = () => {
           ))}
         </div>
       ) : (
-        <p>Sorry, there are no results</p>
+        <p>Sorry, there are no results.</p>
       )}
     </>
   );
